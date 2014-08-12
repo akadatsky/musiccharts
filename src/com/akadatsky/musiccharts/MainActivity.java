@@ -8,15 +8,18 @@ import android.os.Bundle;
 
 public class MainActivity extends Activity {
 
-    private ActionBar actionbar;
+    private ActionBar actionBar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        actionbar = getActionBar();
-        actionbar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        actionBar = getActionBar();
+        actionBar.setDisplayShowHomeEnabled(false);
+        actionBar.setDisplayShowTitleEnabled(false);
+        actionBar.setDisplayUseLogoEnabled(false);
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
         initTab(R.string.world, new WorldFragment());
         initTab(R.string.ukraine, new UkraineFragment());
@@ -24,9 +27,9 @@ public class MainActivity extends Activity {
     }
 
     private void initTab( int tabName, Fragment fragment) {
-        ActionBar.Tab tab = actionbar.newTab().setText(getString(tabName));
+        ActionBar.Tab tab = actionBar.newTab().setText(getString(tabName));
         tab.setTabListener(new MyTabsListener(fragment));
-        actionbar.addTab(tab);
+        actionBar.addTab(tab);
     }
 
     private class MyTabsListener implements ActionBar.TabListener {
