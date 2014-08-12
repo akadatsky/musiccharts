@@ -109,7 +109,7 @@ public abstract class BaseFragment extends Fragment {
             if (error == null) {
                 listView.setVisibility(View.VISIBLE);
                 if (artists.size() >= 10) {
-                    showList(artists.subList(0, 9));
+                    showList(artists.subList(0, 10));
                 }
             } else {
                 errorView.setVisibility(View.VISIBLE);
