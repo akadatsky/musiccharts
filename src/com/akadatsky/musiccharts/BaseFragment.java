@@ -108,7 +108,9 @@ public abstract class BaseFragment extends Fragment {
             progressView.setVisibility(View.GONE);
             if (error == null) {
                 listView.setVisibility(View.VISIBLE);
-                showList(artists.subList(0, 9));
+                if (artists.size() >= 10) {
+                    showList(artists.subList(0, 9));
+                }
             } else {
                 errorView.setVisibility(View.VISIBLE);
                 errorView.setText(error);
@@ -133,9 +135,11 @@ public abstract class BaseFragment extends Fragment {
                     listenersView.setText(String.valueOf(getItem(position).getListeners()) + " " +
                             getActivity().getString(R.string.listeners));
 
-                    String imageUrl = getItem(position).getImage().get(2).getUrl();
-                    ImageView imageView = (ImageView) convertView.findViewById(R.id.image);
-                    imageLoader.displayImage(imageUrl, imageView);
+                    if (getItem(position).getImage() != null && getItem(position).getImage().size() >= 3) {
+                        String imageUrl = getItem(position).getImage().get(2).getUrl();
+                        ImageView imageView = (ImageView) convertView.findViewById(R.id.image);
+                        imageLoader.displayImage(imageUrl, imageView);
+                    }
                 }
 
                 return convertView;
