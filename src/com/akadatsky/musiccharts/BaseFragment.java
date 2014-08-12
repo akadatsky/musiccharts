@@ -1,6 +1,9 @@
 package com.akadatsky.musiccharts;
 
 import android.app.Fragment;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -21,13 +24,14 @@ import org.apache.http.util.EntityUtils;
 
 import java.util.List;
 
-public abstract class BaseFragment  extends Fragment{
+public abstract class BaseFragment extends Fragment {
 
     protected View progressView;
     protected TextView errorView;
     protected ListView listView;
 
     abstract String getUrl();
+
     abstract List<Artist> parseArtists(Gson gson, String response);
 
     @Override
@@ -62,6 +66,16 @@ public abstract class BaseFragment  extends Fragment{
         protected List<Artist> doInBackground(Void... params) {
             error = null;
             List<Artist> result = null;
+
+            if (!isAdded()) {
+                return null;
+            }
+
+            if (!isNetworkAvailable()) {
+                error = getActivity().getString(R.string.no_network);
+                return null;
+            }
+
             try {
                 HttpClient client = new DefaultHttpClient();
                 HttpPost post = new HttpPost(getUrl());
@@ -117,5 +131,10 @@ public abstract class BaseFragment  extends Fragment{
         listView.setAdapter(adapter);
     }
 
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
 
 }
