@@ -120,7 +120,7 @@ public abstract class BaseFragment extends Fragment {
                     TextView nameView = (TextView) convertView.findViewById(R.id.name);
                     TextView listenersView = (TextView) convertView.findViewById(R.id.listeners);
 
-                    nameView.setText(String.valueOf(position) + ". " + getItem(position).getName());
+                    nameView.setText(String.valueOf(position + 1) + ". " + getItem(position).getName());
                     listenersView.setText(String.valueOf(getItem(position).getListeners()) + " " +
                             getActivity().getString(R.string.listeners));
                 }
