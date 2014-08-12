@@ -1,16 +1,21 @@
 package com.akadatsky.musiccharts;
 
-import android.app.Fragment;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import com.akadatsky.musiccharts.model.Artist;
+import com.akadatsky.musiccharts.model.TopArtists;
+import com.akadatsky.musiccharts.util.Const;
+import com.google.gson.Gson;
 
-public class UkraineFragment extends Fragment {
+import java.util.List;
+
+public class UkraineFragment extends BaseFragment {
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.list_fragment, container, false);
+    String getUrl() {
+        return Const.UKRAINE_URL;
     }
 
+    @Override
+    List<Artist> parseArtists(Gson gson, String response) {
+        return gson.fromJson(response, TopArtists.class).getTopartists().getArtist();
+    }
 }
