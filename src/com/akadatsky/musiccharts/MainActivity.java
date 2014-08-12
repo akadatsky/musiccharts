@@ -8,29 +8,25 @@ import android.os.Bundle;
 
 public class MainActivity extends Activity {
 
+    private ActionBar actionbar;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        ActionBar actionbar = getActionBar();
+        actionbar = getActionBar();
         actionbar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
-        ActionBar.Tab worldTab = actionbar.newTab().setText(getString(R.string.world));
-        ActionBar.Tab ukraineTab = actionbar.newTab().setText(getString(R.string.ukraine));
-        ActionBar.Tab denmarkTab = actionbar.newTab().setText(getString(R.string.denmark));
+        initTab(R.string.world, new WorldFragment());
+        initTab(R.string.ukraine, new UkraineFragment());
+        initTab(R.string.denmark, new DenmarkFragment());
+    }
 
-        Fragment worldFragment = new WorldFragment();
-        Fragment ukraineFragment = new UkraineFragment();
-        Fragment denmarkFragment = new DenmarkFragment();
-
-        worldTab.setTabListener(new MyTabsListener(worldFragment));
-        ukraineTab.setTabListener(new MyTabsListener(ukraineFragment));
-        denmarkTab.setTabListener(new MyTabsListener(denmarkFragment));
-
-        actionbar.addTab(worldTab);
-        actionbar.addTab(ukraineTab);
-        actionbar.addTab(denmarkTab);
+    private void initTab( int tabName, Fragment fragment) {
+        ActionBar.Tab tab = actionbar.newTab().setText(getString(tabName));
+        tab.setTabListener(new MyTabsListener(fragment));
+        actionbar.addTab(tab);
     }
 
     private class MyTabsListener implements ActionBar.TabListener {
