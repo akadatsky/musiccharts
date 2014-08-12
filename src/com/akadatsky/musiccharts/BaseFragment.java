@@ -10,11 +10,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.akadatsky.musiccharts.model.Artist;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -29,6 +32,8 @@ public abstract class BaseFragment extends Fragment {
     protected View progressView;
     protected TextView errorView;
     protected ListView listView;
+
+    protected ImageLoader imageLoader;
 
     abstract String getUrl();
 
@@ -46,6 +51,10 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        imageLoader = ImageLoader.getInstance();
+        imageLoader.init(ImageLoaderConfiguration.createDefault(getActivity()));
+
         new LoadArtistTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
@@ -123,6 +132,10 @@ public abstract class BaseFragment extends Fragment {
                     nameView.setText(String.valueOf(position + 1) + ". " + getItem(position).getName());
                     listenersView.setText(String.valueOf(getItem(position).getListeners()) + " " +
                             getActivity().getString(R.string.listeners));
+
+                    String imageUrl = getItem(position).getImage().get(2).getUrl();
+                    ImageView imageView = (ImageView) convertView.findViewById(R.id.image);
+                    imageLoader.displayImage(imageUrl, imageView);
                 }
 
                 return convertView;
